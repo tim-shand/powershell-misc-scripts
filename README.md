@@ -1,3 +1,3 @@
 # Powershell Scripts: Misc
-_ Collection of Powershell scripts used for various tasks._
+*_Collection of Powershell scripts used for various tasks._*
 
