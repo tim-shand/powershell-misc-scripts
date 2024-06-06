@@ -1,2 +1,3 @@
-# ps-scripts-misc
-Collection of Powershell scripts used for various tasks. 
+# Powershell Scripts: Misc
+_ Collection of Powershell scripts used for various tasks._
+
