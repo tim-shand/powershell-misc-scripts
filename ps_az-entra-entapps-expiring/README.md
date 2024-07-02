@@ -1,4 +1,4 @@
-# Powershell: Azure (Entra ID) - Entra ID Enterpriose Apps Expiring
+# Powershell: Azure (Entra ID) - Entra ID Enterprise Apps Expiring
 *_Generate CSV output of due to expire application service principals in Entra ID._*
 
 - Requires 'AzureAD Preview' Module (`Install-Module AzureADPreview`).   
