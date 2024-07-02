@@ -79,10 +79,10 @@ function Activate-PimRoles($session){
     $allSettings = $NULL
     Write-Host -BackgroundColor Magenta "--- Collecting PIM Role Information ---"
     # Get PIM role information for current user.
-    $myId = [string](Get-AzureAdUser -Filter "userPrincipalName eq '$($session.Account | Select -First 1)'").ObjectId
-    $myRoles = (Get-AzureADMSPrivilegedRoleAssignment -ProviderId "aadRoles" -ResourceId $($session.TenantId | Select -First 1) -Filter "SubjectId eq '$myId'")
-    $allRoles = (Get-AzureADMSPrivilegedRoleDefinition -ProviderId "aadRoles" -ResourceId $($session.TenantId | Select -First 1)) #$session.TenantId)
-    $allSettings = (Get-AzureADMSPrivilegedRoleSetting -ProviderId "aadRoles" -Filter "ResourceId eq '$($session.TenantId | Select -First 1)'")
+    $myId = [string](Get-AzureAdUser -Filter "userPrincipalName eq '$($sessionAccount)'").ObjectId
+    $myRoles = (Get-AzureADMSPrivilegedRoleAssignment -ProviderId "aadRoles" -ResourceId $sessionTenantId -Filter "SubjectId eq '$myId'")
+    $allRoles = (Get-AzureADMSPrivilegedRoleDefinition -ProviderId "aadRoles" -ResourceId $sessionTenantId)
+    $allSettings = (Get-AzureADMSPrivilegedRoleSetting -ProviderId "aadRoles" -Filter "ResourceId eq '$($sessionTenantId)'")
 
     # Add human readable names to $myRoles
     $i = 1
@@ -117,7 +117,7 @@ function Activate-PimRoles($session){
                 Write-Host -ForegroundColor Yellow "Activating PIM Role: $($r.RoleDisplayName)..." -NoNewline
                 Open-AzureADMSPrivilegedRoleAssignmentRequest `
                     -ProviderId "aadRoles" `
-                    -ResourceId $session.TenantId `
+                    -ResourceId $sessionTenantId `
                     -RoleDefinitionId $r.RoleDefinitionId `
                     -SubjectId $myId `
                     -Schedule $schedule `
@@ -144,6 +144,8 @@ Check-Modules
 
 # Check connection to Azure.
 $session = Check-AzureSession
+$sessionAccount = $session.Account | Select -First 1
+$sessionTenantId = $session.TenantId | Select -First 1
 
 # Activate all PIM roles assigned. 
 Activate-PimRoles -session $session
